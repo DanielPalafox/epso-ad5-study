@@ -446,6 +446,106 @@ header.masthead {
   line-height: 1.6;
   text-align: center;
 }
+.feedback-row {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.feedback-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 1.5px solid var(--rule);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+  color: var(--ink2);
+  font: 600 12.5px var(--sans);
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-transition:
+    border-color 0.15s,
+    color 0.15s,
+    background 0.15s,
+    transform 0.08s;
+  transition:
+    border-color 0.15s,
+    color 0.15s,
+    background 0.15s,
+    transform 0.08s;
+  -webkit-tap-highlight-color: transparent;
+}
+.feedback-btn:hover,
+.feedback-btn:focus-visible {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--bg2);
+  outline: none;
+}
+.feedback-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.feedback-btn:active {
+  transform: translateY(1px);
+}
+.feedback-icon {
+  font-size: 14px;
+  line-height: 1;
+  color: var(--gold);
+}
+.feedback-hint {
+  font-style: italic;
+  font-family: var(--serif);
+  font-size: 11.5px;
+  color: var(--muted);
+  max-width: 360px;
+}
+.credit {
+  margin: 18px 0 0;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 12px;
+  color: var(--muted);
+}
+.credit-heart {
+  color: var(--heart);
+  font-style: normal;
+  margin: 0 1px;
+  -webkit-animation: creditBeat 1.6s ease-in-out infinite;
+  animation: creditBeat 1.6s ease-in-out infinite;
+  display: inline-block;
+}
+@-webkit-keyframes creditBeat {
+  0%, 100% { transform: scale(1); }
+  20%      { transform: scale(1.18); }
+  40%      { transform: scale(1); }
+}
+@keyframes creditBeat {
+  0%, 100% { transform: scale(1); }
+  20%      { transform: scale(1.18); }
+  40%      { transform: scale(1); }
+}
+.credit-link {
+  color: var(--primary);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--rule);
+  -webkit-transition: color 0.15s, border-color 0.15s;
+  transition: color 0.15s, border-color 0.15s;
+}
+.credit-link:hover,
+.credit-link:focus-visible {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  outline: none;
+}
+.credit-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
 
 /* ── Focus ── */
 button:focus-visible,
