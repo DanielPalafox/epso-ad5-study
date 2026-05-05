@@ -1,0 +1,30 @@
+{
+  "name": "epso-ad5-study",
+  "version": "1.0.0",
+  "description": "Gamified prep for the EPSO AD5 Digital Skills Test — DigComp 2.2/3.0, hearts, XP, mock exam. Browser-only, no build.",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "dev": "npx --yes serve@latest .",
+    "start": "npx --yes serve@latest .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "validate:questions": "node scripts/validate-questions.mjs",
+    "version:sw": "node scripts/version-sw.mjs",
+    "check": "npm run typecheck && npm run test && npm run validate:questions"
+  },
+  "keywords": [
+    "epso",
+    "ad5",
+    "digcomp",
+    "study",
+    "exam",
+    "gamification",
+    "spaced-repetition"
+  ],
+  "devDependencies": {
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.0"
+  }
+}

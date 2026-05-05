@@ -1,0 +1,21 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Tooling / local
+.claude/
+node_modules/
+*.log
+.env
+.env.*
+.cache/
+dist/
+build/
+coverage/

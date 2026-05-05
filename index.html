@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="description"
+        content="Gamified prep for the EPSO AD5 Digital Skills Test — 194 questions across DigComp 2.2 and 3.0, mock exam, hearts, XP, spaced repetition. Runs entirely in your browser.">
+    <meta name="theme-color" content="#f6f1e7">
+    <meta name="color-scheme" content="light">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="EPSO AD5">
+
+    <meta property="og:title" content="EPSO AD5 — Digital Skills Study Game">
+    <meta property="og:description"
+        content="Gamified prep for the EPSO AD5 Digital Skills Test. 194 questions, hearts, XP, mock exam — runs entirely in your browser.">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_US">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="EPSO AD5 — Digital Skills Study Game">
+    <meta name="twitter:description"
+        content="Gamified prep for the EPSO AD5 Digital Skills Test. 194 questions, mock exam, spaced repetition.">
+
+    <title>EPSO AD5 — Digital Skills</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231d3557'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-style='italic' font-weight='600' font-size='18' fill='%23f6f1e7' text-anchor='middle'%3Ee%3C/text%3E%3C/svg%3E">
+    <link rel="apple-touch-icon"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' fill='%231d3557'/%3E%3Ctext x='90' y='124' font-family='Georgia,serif' font-style='italic' font-weight='600' font-size='110' fill='%23f6f1e7' text-anchor='middle'%3Ee%3C/text%3E%3C/svg%3E">
+</head>
+
+<body>
+    <div class="app">
+        <header class="masthead">
+            <div class="brand">
+                <div class="seal" aria-hidden="true">e</div>
+                <div>
+                    <h1>EPSO AD5 — Digital Skills</h1>
+                    <div class="sub">Study companion · DigComp 2.2</div>
+                </div>
+            </div>
+            <div class="status-bar" id="status-bar"></div>
+        </header>
+        <main id="view"></main>
+        <footer class="footnote">
+            <span>Built for exam preparation, not as legal advice. Question bank reflects DigComp 2.2 (JRC128415) and
+                EPSO sample materials. Progress saved locally in your browser.</span>
+        </footer>
+    </div>
+    <div class="sr-only" aria-live="polite" id="live"></div>
+    <noscript>
+        <div class="noscript-warning">
+            <strong>JavaScript is required.</strong>
+            This study app runs entirely in your browser and needs JavaScript to load
+            the question bank and track your progress. Please enable it and reload.
+        </div>
+    </noscript>
+    <script src="questions.js"></script>
+    <script src="digcomp3.js"></script>
+    <script type="module" src="src/app.js"></script>
+</body>
+
+</html>
