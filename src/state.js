@@ -54,7 +54,14 @@ export function defaultState() {
       view: VIEWS.HOME,
       lessonEnd: null,
       mockResult: null,
-      sessionStreak: 0
+      sessionStreak: 0,
+      // order[id] = 4-element permutation of original option indices.
+      // Re-shuffled at deck creation; balanced for mock tests.
+      order: {},
+      // mockAnswers[id] = displayed answer index (0–3) the candidate
+      // currently has selected, or undefined if not yet chosen. Persists
+      // when navigating between questions so selections survive Prev/Next.
+      mockAnswers: {}
     }
   };
 }

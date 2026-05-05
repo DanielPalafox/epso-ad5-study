@@ -10,7 +10,7 @@ import {
   STATE, saveState, compState, maybeBumpStreak
 } from "./state.js";
 import { announce, fmtTime } from "./helpers.js";
-import { buildLessonDeck, buildMockDeck, buildPracticeDeck, buildReviewDeck } from "./decks.js";
+import { buildLessonDeck, buildMockDeck, buildPracticeDeck, buildReviewDeck, buildOrder } from "./decks.js";
 import { updateSR } from "./spaced-rep.js";
 import { showConfetti } from "./effects.js";
 import { showAlert, showConfirm, showOutOfHearts } from "./modals.js";
@@ -36,6 +36,8 @@ export function startLesson(comp) {
   e.startingHearts = STATE.user.hearts;
   e.currentAnswer = null;
   e.sessionStreak = 0;
+  e.order = buildOrder(e.deck, false);
+  e.mockAnswers = {};
   e.view = VIEWS.LESSON;
   render();
 }
@@ -53,6 +55,8 @@ export function startMock() {
       e.mockEnd = Date.now() + MOCK_DURATION_MS;
       e.currentAnswer = null;
       e.sessionStreak = 0;
+      e.order = buildOrder(e.deck, true);
+      e.mockAnswers = {};
       e.view = VIEWS.MOCK;
       startMockTimer();
       render();
@@ -71,6 +75,8 @@ export function startPractice(comp) {
   e.lessonResults = [];
   e.currentAnswer = null;
   e.sessionStreak = 0;
+  e.order = buildOrder(e.deck, false);
+  e.mockAnswers = {};
   e.view = VIEWS.PRACTICE;
   render();
 }
@@ -84,6 +90,8 @@ export function startReview() {
   e.lessonResults = [];
   e.currentAnswer = null;
   e.sessionStreak = 0;
+  e.order = buildOrder(e.deck, false);
+  e.mockAnswers = {};
   e.view = VIEWS.REVIEW;
   render();
 }
@@ -116,16 +124,45 @@ export function stopMockTimer() {
 }
 
 // ── Answer / advance / quit ───────────────────────────────────
+/**
+ * Record a candidate's selection.
+ *
+ * Lesson / practice / review: locks the answer, awards XP / deducts hearts,
+ * and shows immediate feedback (existing study-mode behaviour, preserved).
+ *
+ * Mock test: stores the displayed-position selection in `mockAnswers[id]`
+ * without revealing correctness, advancing the cursor, or scoring. The
+ * candidate may revise the choice freely until they tap Submit. Scoring
+ * happens once in `submitMock()`.
+ *
+ * `chosen` is the **displayed** option index (0–3) the user clicked.
+ *
+ * @param {number} chosen
+ */
 export function recordAnswer(chosen) {
   const e = STATE.ephemeral;
   const id = e.deck[e.cursor];
   if (id == null) return;
-  if (e.currentAnswer !== null) return;
 
   const q = QBYID[id];
-  const correct = chosen === q.a;
+  const perm = e.order && e.order[id];
+  const originalChosen = perm ? perm[chosen] : chosen;
+
+  if (e.currentMode === VIEWS.MOCK) {
+    if (chosen < 0) {
+      delete e.mockAnswers[id];
+    } else {
+      e.mockAnswers[id] = chosen;
+    }
+    render();
+    return;
+  }
+
+  if (e.currentAnswer !== null) return;
+
+  const correct = originalChosen === q.a;
   e.currentAnswer = chosen;
-  e.lessonResults.push({ id, chosen, correct });
+  e.lessonResults.push({ id, chosen: originalChosen, correct });
 
   if (!STATE.qStats[id]) {
     STATE.qStats[id] = { seen: 0, correct: 0, ease: SR_EASE_DEFAULT, interval: 1, due: null };
@@ -157,12 +194,101 @@ export function recordAnswer(chosen) {
   }
   saveState();
 
-  if (e.currentMode === VIEWS.MOCK) {
-    advance();
-  } else {
+  render();
+  announce(correct ? "Correct." : "Incorrect. The correct answer is " + displayedLetter(id, q.a) + ".");
+}
+
+/** Letter (A–D) at which the original-index `originalIdx` is displayed for `id`. */
+function displayedLetter(id, originalIdx) {
+  const perm = STATE.ephemeral.order && STATE.ephemeral.order[id];
+  const k = perm ? perm.indexOf(originalIdx) : originalIdx;
+  return String.fromCharCode(65 + k);
+}
+
+/**
+ * Jump to a specific question index. Mock-mode only — other modes are linear.
+ * Out-of-range indices are clamped.
+ *
+ * @param {number} idx
+ */
+export function gotoQuestion(idx) {
+  const e = STATE.ephemeral;
+  if (e.currentMode !== VIEWS.MOCK) return;
+  if (e.deck.length === 0) return;
+  const clamped = Math.max(0, Math.min(e.deck.length - 1, idx));
+  if (clamped === e.cursor) return;
+  e.cursor = clamped;
+  e.currentAnswer = null;
+  render();
+}
+
+/** Move one question back. Mock-mode only. */
+export function previousQuestion() {
+  const e = STATE.ephemeral;
+  if (e.currentMode !== VIEWS.MOCK) return;
+  if (e.cursor > 0) {
+    e.cursor -= 1;
+    e.currentAnswer = null;
     render();
-    announce(correct ? "Correct." : "Incorrect. The correct answer is " + String.fromCharCode(65 + q.a) + ".");
   }
+}
+
+/**
+ * Move one question forward. In MOCK mode this only navigates — no submit.
+ * Other modes still call `advance()` which handles end-of-deck.
+ */
+export function nextQuestion() {
+  const e = STATE.ephemeral;
+  if (e.currentMode !== VIEWS.MOCK) return;
+  if (e.cursor < e.deck.length - 1) {
+    e.cursor += 1;
+    e.currentAnswer = null;
+    render();
+  }
+}
+
+/**
+ * Confirm and finalise a mock test. Walks the deck to compute the score
+ * from `mockAnswers` (mapping displayed → original indices) and produces
+ * the same lessonResults shape the results screen already consumes.
+ */
+export function submitMock() {
+  const e = STATE.ephemeral;
+  if (e.currentMode !== VIEWS.MOCK) return;
+  const answered = Object.keys(e.mockAnswers).length;
+  const total = e.deck.length;
+  const remaining = total - answered;
+  const msg = remaining > 0
+    ? "You are about to submit your test. " + remaining + " of " + total + " questions are unanswered. Are you sure you want to finish?"
+    : "You are about to submit your test. Are you sure you want to finish?";
+  showConfirm(msg, () => finalizeMock(), "Submit test", "Keep going");
+}
+
+/** Internal: compile lessonResults from mockAnswers and call finishMock. */
+function finalizeMock() {
+  const e = STATE.ephemeral;
+  e.lessonResults = e.deck.map(id => {
+    const q = QBYID[id];
+    const perm = e.order && e.order[id];
+    const displayed = e.mockAnswers[id];
+    if (displayed === undefined) {
+      return { id, chosen: -1, correct: false };
+    }
+    const originalChosen = perm ? perm[displayed] : displayed;
+    return { id, chosen: originalChosen, correct: originalChosen === q.a };
+  });
+  // Update qStats once at submission (so hearts/SR don't track in-progress edits)
+  e.lessonResults.forEach(r => {
+    if (r.chosen < 0) return;
+    if (!STATE.qStats[r.id]) {
+      STATE.qStats[r.id] = { seen: 0, correct: 0, ease: SR_EASE_DEFAULT, interval: 1, due: null };
+    }
+    STATE.qStats[r.id].seen += 1;
+    if (r.correct) STATE.qStats[r.id].correct += 1;
+    updateSR(r.id, r.correct);
+  });
+  saveState();
+  finishMock();
 }
 
 export function toggleFlag(id) {
@@ -174,6 +300,11 @@ export function toggleFlag(id) {
 
 export function advance() {
   const e = STATE.ephemeral;
+  // Mock mode no longer auto-advances on answer; nav is explicit via Prev/Next.
+  if (e.currentMode === VIEWS.MOCK) {
+    if (e.cursor < e.deck.length - 1) nextQuestion();
+    return;
+  }
   if (e.currentMode === VIEWS.LESSON && STATE.user.hearts <= 0) {
     finishLesson(false);
     return;
@@ -184,7 +315,6 @@ export function advance() {
     render();
   } else {
     if (e.currentMode === VIEWS.LESSON) finishLesson(true);
-    else if (e.currentMode === VIEWS.MOCK) finishMock();
     else finishPracticeOrReview();
   }
 }
@@ -192,7 +322,7 @@ export function advance() {
 export function quitMode() {
   const e = STATE.ephemeral;
   if (e.currentMode === VIEWS.MOCK) {
-    showConfirm("End the mock test now? Unanswered questions will count as wrong.", finishMock, "End test", "Keep going");
+    showConfirm("Leave the mock test? Your selections will be discarded and the test ended without scoring.", goHome, "Leave test", "Keep going");
   } else if (e.currentMode === VIEWS.LESSON) {
     showConfirm("Quit the lesson? Progress in this lesson will not count.", goHome, "Quit", "Keep going");
   } else {
@@ -207,6 +337,8 @@ export function goHome() {
   e.deck = [];
   e.cursor = 0;
   e.currentAnswer = null;
+  e.order = {};
+  e.mockAnswers = {};
   setView(VIEWS.HOME);
 }
 

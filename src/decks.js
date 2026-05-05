@@ -1,9 +1,10 @@
 // Deck builders for each game mode. Each returns an array of question ids.
 
 import { QUESTIONS_PER_LESSON } from "./constants.js";
-import { QUESTIONS, QBYC } from "./data.js";
+import { QUESTIONS, QBYC, QBYID } from "./data.js";
 import { STATE, compState } from "./state.js";
 import { shuffle, isoDate } from "./helpers.js";
+import { buildBalancedOrder, buildShuffledOrder, positionStats } from "./options.js";
 
 export function buildLessonDeck(comp) {
   const all = (QBYC[comp] || []).slice();
@@ -39,6 +40,71 @@ export function buildMockDeck() {
     deck.push(...shuffle(aq).slice(0, 8).map(q => q.i));
   }
   return shuffle(deck);
+}
+
+/**
+ * Build a per-question option permutation map for `deck` and validate that
+ * the resulting correct-answer positions are balanced and not predictable.
+ *
+ * Validation criteria for a 40-question test:
+ *   - each of A/B/C/D appears 10±1 times (close-to-25/25/25/25);
+ *   - no position has more than (target + 2) occurrences;
+ *   - no run of identical correct positions exceeds 3.
+ * If a generated order fails, regenerate up to `maxAttempts` times before
+ * giving up and returning the best one.
+ *
+ * @param {string[]} deck
+ * @returns {Record<string, number[]>}
+ */
+export function buildBalancedOrderForMock(deck) {
+  const target = Math.floor(deck.length / 4);
+  const tolerance = 1;
+  const maxStreak = 3;
+  const maxAttempts = 50;
+
+  let best = buildBalancedOrder(deck, QBYID);
+  let bestScore = scoreOrder(deck, best, target);
+
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    const stats = positionStats(deck, best, QBYID);
+    const within = stats.counts.every(c => Math.abs(c - target) <= tolerance);
+    if (within && stats.maxRun <= maxStreak) return best;
+
+    const candidate = buildBalancedOrder(deck, QBYID);
+    const score = scoreOrder(deck, candidate, target);
+    if (score < bestScore) {
+      best = candidate;
+      bestScore = score;
+    }
+  }
+  return best;
+}
+
+/**
+ * Lower is better. Penalises deviation from target counts and long streaks.
+ * @param {string[]} deck
+ * @param {Record<string, number[]>} order
+ * @param {number} target
+ * @returns {number}
+ */
+function scoreOrder(deck, order, target) {
+  const stats = positionStats(deck, order, QBYID);
+  const dev = stats.counts.reduce((acc, c) => acc + Math.abs(c - target), 0);
+  return dev * 10 + Math.max(0, stats.maxRun - 3) * 5;
+}
+
+/**
+ * Build a permutation map for any deck size. Mock decks get the balanced
+ * variant; smaller decks (lessons, practice, review) get a per-question
+ * shuffle. The returned map is suitable for assigning to STATE.ephemeral.order.
+ *
+ * @param {string[]} deck
+ * @param {boolean} balanced
+ * @returns {Record<string, number[]>}
+ */
+export function buildOrder(deck, balanced) {
+  if (balanced) return buildBalancedOrderForMock(deck);
+  return buildShuffledOrder(deck, QBYID);
 }
 
 export function buildPracticeDeck(comp) {

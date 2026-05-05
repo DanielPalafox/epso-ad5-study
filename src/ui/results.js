@@ -93,11 +93,19 @@ export function renderMockEnd() {
     wrongs.forEach(id => {
       const q = QBYID[id];
       const a = e.lessonResults.find(rr => rr.id === id);
-      const yourLetter = a && a.chosen >= 0 ? String.fromCharCode(65 + a.chosen) : "—";
+      // a.chosen is the *original* option index (the displayed-permutation has
+      // already been resolved at submit). Re-resolve the displayed letter so
+      // the review screen uses the same labels the candidate saw.
+      const perm = e.order && e.order[id];
+      const displayedChosen = a && a.chosen >= 0
+        ? (perm ? perm.indexOf(a.chosen) : a.chosen)
+        : -1;
+      const displayedCorrect = perm ? perm.indexOf(q.a) : q.a;
+      const yourLetter = displayedChosen >= 0 ? String.fromCharCode(65 + displayedChosen) : "—";
       const yourText = a && a.chosen >= 0 ? escapeHTML(q.o[a.chosen]) : "(not answered)";
       html += '<div class="review-item">';
       html += '<p class="stem"><span class="review-tag">' + q.c + '</span>' + escapeHTML(q.q) + '</p>';
-      html += '<div class="answer-row">Your answer: <span class="your">' + yourLetter + '. ' + yourText + '</span> · Correct: <span class="right">' + String.fromCharCode(65 + q.a) + '. ' + escapeHTML(q.o[q.a]) + '</span></div>';
+      html += '<div class="answer-row">Your answer: <span class="your">' + yourLetter + '. ' + yourText + '</span> · Correct: <span class="right">' + String.fromCharCode(65 + displayedCorrect) + '. ' + escapeHTML(q.o[q.a]) + '</span></div>';
       html += '<div class="why">' + escapeHTML(q.e) + '</div>';
       html += '</div>';
     });

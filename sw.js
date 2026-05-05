@@ -24,6 +24,7 @@ const APP_SHELL = [
   "./src/state.js",
   "./src/actions.js",
   "./src/decks.js",
+  "./src/options.js",
   "./src/spaced-rep.js",
   "./src/data.js",
   "./src/constants.js",
