@@ -29,6 +29,7 @@ const APP_SHELL = [
   "src/modals.js",
   "src/effects.js",
   "src/keyboard.js",
+  "src/theme.js",
   "src/ui/home.js",
   "src/ui/competence.js",
   "src/ui/question.js",

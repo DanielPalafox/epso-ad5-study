@@ -1,15 +1,23 @@
-// Settings page — daily goal selector and reset-progress action.
+// Settings page — daily goal selector, theme picker, and reset-progress action.
 
 import { STATE, saveState, resetState } from "../state.js";
 import { showConfirm } from "../modals.js";
 import { toast } from "../effects.js";
 import { goHome } from "../actions.js";
+import { setTheme } from "../theme.js";
+import { render } from "../router.js";
 
 const DAILY_GOAL_OPTIONS = [20, 50, 100, 200];
+const THEME_OPTIONS = [
+  { value: "auto",  label: "Auto (follow system)" },
+  { value: "light", label: "Light" },
+  { value: "dark",  label: "Dark" }
+];
 
 export function renderSettings() {
   const wrap = document.createElement("div");
   wrap.className = "settings-panel";
+  const currentTheme = STATE.user.theme || "auto";
 
   let html = '<div class="qbar"><div class="qbar-left"><span class="page-title">Settings</span></div><div class="qbar-right"><button class="btn ghost small" data-act="home">← Home</button></div></div>';
 
@@ -17,6 +25,13 @@ export function renderSettings() {
   html += '<select id="daily-goal-select" data-pref="dailyGoal">';
   DAILY_GOAL_OPTIONS.forEach(v => {
     html += '<option value="' + v + '"' + (STATE.user.dailyGoal === v ? ' selected' : '') + '>' + v + ' XP</option>';
+  });
+  html += '</select></div>';
+
+  html += '<div class="row"><div><label for="theme-select" class="label">Theme</label><div class="desc">Auto matches your system preference. Pick light or dark to override.</div></div>';
+  html += '<select id="theme-select" data-pref="theme">';
+  THEME_OPTIONS.forEach(opt => {
+    html += '<option value="' + opt.value + '"' + (currentTheme === opt.value ? ' selected' : '') + '>' + opt.label + '</option>';
   });
   html += '</select></div>';
 
@@ -40,6 +55,13 @@ export function renderSettings() {
     STATE.user.dailyGoal = parseInt(select.value, 10);
     saveState();
     toast("Daily goal updated.");
+  });
+  wrap.querySelector("[data-pref='theme']").addEventListener("change", e => {
+    const select = /** @type {HTMLSelectElement} */ (e.target);
+    const value = /** @type {"auto" | "light" | "dark"} */ (select.value);
+    setTheme(value);
+    render();
+    toast("Theme updated.");
   });
 
   return wrap;

@@ -6,6 +6,7 @@
 import { VIEWS, ACTIVE_VIEWS, MAX_HEARTS } from "./constants.js";
 import { STATE, regenHearts, refreshDailyTotals } from "./state.js";
 import { heartRow } from "./html.js";
+import { toggleTheme, effectiveTheme } from "./theme.js";
 import { renderHome } from "./ui/home.js";
 import { renderQuestion } from "./ui/question.js";
 import { renderLessonEnd, renderMockEnd } from "./ui/results.js";
@@ -34,10 +35,18 @@ function renderStatusBar() {
   const bar = document.getElementById("status-bar");
   if (!bar) return;
   const u = STATE.user;
+  const t = effectiveTheme();
+  const nextLabel = t === "dark" ? "light" : "dark";
   bar.innerHTML =
     '<div class="stat hearts" title="Hearts (regen 1 per 30 min)">' + heartRow(u.hearts, u.hearts + ' of ' + MAX_HEARTS + ' hearts') + '<span class="num">' + u.hearts + '</span></div>' +
     '<div class="stat xp" title="Total XP earned"><span class="xp-icon" aria-hidden="true">x</span><span class="num">' + u.xp + '</span></div>' +
-    '<div class="stat streak ' + (u.streak === 0 ? 'dim' : '') + '" title="' + u.streak + '-day streak"><span class="flame-icon" aria-hidden="true"></span><span class="num">' + u.streak + '</span></div>';
+    '<div class="stat streak ' + (u.streak === 0 ? 'dim' : '') + '" title="' + u.streak + '-day streak"><span class="flame-icon" aria-hidden="true"></span><span class="num">' + u.streak + '</span></div>' +
+    '<button type="button" class="theme-toggle" data-act="theme" title="Switch to ' + nextLabel + ' mode" aria-label="Switch to ' + nextLabel + ' mode">' +
+      '<span class="theme-icon-light" aria-hidden="true">☀</span>' +
+      '<span class="theme-icon-dark" aria-hidden="true">☾</span>' +
+    '</button>';
+  const tBtn = bar.querySelector("[data-act='theme']");
+  if (tBtn) tBtn.addEventListener("click", () => { toggleTheme(); render(); });
 }
 
 const RENDERERS = {

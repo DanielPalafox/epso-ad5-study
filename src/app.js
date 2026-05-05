@@ -7,10 +7,13 @@ import { STATE, initState, isStorageAvailable, regenHearts } from "./state.js";
 import { render, initRouter } from "./router.js";
 import { attachKeyboard } from "./keyboard.js";
 import { toast } from "./effects.js";
+import { applyTheme, watchSystemTheme } from "./theme.js";
 
 const HEART_TICK_MS = 60_000;
 
 initState();
+applyTheme();
+watchSystemTheme();
 initRouter();
 regenHearts();
 attachKeyboard();

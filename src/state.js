@@ -35,7 +35,9 @@ export function defaultState() {
       heartsLastRegen: Date.now(),
       dailyGoal: 50,
       xpToday: 0,
-      xpTodayDate: isoDate()
+      xpTodayDate: isoDate(),
+      // Theme preference: "auto" follows the OS, "light"/"dark" are explicit.
+      theme: "auto"
     },
     competences: {},
     qStats: {},

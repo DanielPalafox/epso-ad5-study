@@ -7,7 +7,34 @@
     <meta name="description"
         content="Gamified prep for the EPSO AD5 Digital Skills Test — 194 questions across DigComp 2.2 and 3.0, mock exam, hearts, XP, spaced repetition. Runs entirely in your browser.">
     <meta name="theme-color" content="#f6f1e7">
-    <meta name="color-scheme" content="light">
+    <meta name="color-scheme" content="light dark">
+
+    <!-- Apply the user's saved theme before any stylesheet loads, so a dark-mode
+         user does not see a flash of the light theme on first paint. Mirrors the
+         logic in src/theme.js but stays inline so it runs in the head. -->
+    <script>
+        (function () {
+            try {
+                var raw = localStorage.getItem("epso_ad5_v1");
+                var pref = "auto";
+                if (raw) {
+                    var p = JSON.parse(raw);
+                    if (p && p.user && (p.user.theme === "light" || p.user.theme === "dark" || p.user.theme === "auto")) {
+                        pref = p.user.theme;
+                    }
+                }
+                var resolved = pref;
+                if (pref === "auto") {
+                    resolved = (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light";
+                }
+                document.documentElement.setAttribute("data-theme", resolved);
+                if (resolved === "dark") {
+                    var meta = document.querySelector('meta[name="theme-color"]');
+                    if (meta) meta.setAttribute("content", "#181410");
+                }
+            } catch (e) { /* localStorage unavailable — fall through to default */ }
+        })();
+    </script>
 
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
