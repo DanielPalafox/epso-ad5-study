@@ -118,13 +118,14 @@ Then open the URL the server prints (usually `http://localhost:3000`).
 index.html              Entry document; loads questions.js, digcomp3.js, src/app.js
 questions.js            DigComp 2.2 question bank (168 items)
 digcomp3.js             DigComp 3.0 question bank + reference data
-styles.css              All styling (mobile-first, no preprocessor)
+styles/                 Stylesheets split by concern (base, home, question, exam, results, digcomp3)
 src/
   app.js                Boot: state init, keyboard, render loop
   router.js             View dispatcher + status bar
   state.js              Persistent + ephemeral state, localStorage
   actions.js            Mode controllers, answer/advance/quit
   decks.js              Deck builders (lesson, mock, practice, review)
+  options.js            Per-question option permutation + balanced positions
   spaced-rep.js         SM-2 spaced repetition
   data.js               Derived lookups (QBYID, QBYC, COMP_NAMES)
   constants.js          Configuration values

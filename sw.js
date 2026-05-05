@@ -15,7 +15,12 @@ const CACHE_NAME = "epso-ad5-" + CACHE_VERSION;
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./styles.css",
+  "./styles/base.css",
+  "./styles/home.css",
+  "./styles/question.css",
+  "./styles/exam.css",
+  "./styles/results.css",
+  "./styles/digcomp3.css",
   "./manifest.webmanifest",
   "./questions.js",
   "./digcomp3.js",

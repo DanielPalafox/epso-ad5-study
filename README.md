@@ -77,7 +77,13 @@ Your app will be live at `https://DanielPalafox.github.io/epso-ad5-study` within
 ```text
 .
 ├── index.html          # Single-page shell — loads CSS + JS, renders into #view
-├── styles.css          # All styling — mobile-first, desktop via min-width queries
+├── styles/             # Stylesheets, one file per concern (no preprocessor)
+│   ├── base.css        # Tokens, layout shell, masthead, buttons, icons
+│   ├── home.css        # Home screen: daily card, mode pills, skill tree
+│   ├── question.css    # Study-mode question UI
+│   ├── exam.css        # Mock-test exam UI overrides (qnum bar, prev/next)
+│   ├── results.css     # End-of-session screens + modal dialogs
+│   └── digcomp3.css    # DigComp 3.0 reference page
 ├── questions.js        # 168 DigComp 2.2 questions + AREAS structure (window globals)
 ├── digcomp3.js         # 26 DigComp 3.0 questions + reference data (window globals)
 ├── src/                # Application source (native ES modules — no build)
@@ -86,6 +92,7 @@ Your app will be live at `https://DanielPalafox.github.io/epso-ad5-study` within
 │   ├── state.js        # Persistent + ephemeral state, localStorage
 │   ├── actions.js      # Mode controllers (start/finish/answer/quit)
 │   ├── decks.js        # Deck builders (lesson, mock, practice, review)
+│   ├── options.js      # Per-question option permutation + balanced positions
 │   ├── spaced-rep.js   # SM-2 spaced repetition
 │   ├── data.js         # Derived lookups (QBYID, QBYC, COMP_NAMES)
 │   ├── constants.js    # Configuration values

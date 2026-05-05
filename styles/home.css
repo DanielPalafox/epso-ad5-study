@@ -1,0 +1,446 @@
+/* home.css ─ home screen: daily goal card, section headings, mode pills,
+   skill-tree path with crown medallions, and the lesson-intro splash. */
+
+/* ── Daily goal card ── */
+.daily-card {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  padding: 16px 18px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+@media (min-width: 601px) {
+  .daily-card {
+    padding: 18px 22px;
+    margin-bottom: 28px;
+  }
+}
+.daily-card .left {
+  flex: 1;
+  min-width: 200px;
+}
+.daily-card .label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.daily-card .progress-line {
+  font-family: var(--serif);
+  font-size: 18px;
+  line-height: 1.3;
+}
+.daily-card .progress-line strong {
+  color: var(--gold);
+  font-style: italic;
+}
+.daily-card .bar {
+  height: 8px;
+  background: var(--bg2);
+  margin-top: 10px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.daily-card .bar .fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--accent));
+  -webkit-transition: width 0.4s ease;
+  transition: width 0.4s ease;
+  border-radius: 4px;
+}
+.daily-card .bar .fill.done {
+  background: var(--correct);
+}
+.daily-card .right {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--muted);
+  font-size: 13.5px;
+  max-width: 240px;
+}
+
+/* ── Section heads ── */
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin: 32px 0 16px;
+}
+.section-head h3 {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0;
+  letter-spacing: -0.005em;
+}
+.section-head .num {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--gold);
+  font-size: 14px;
+}
+.section-head .rule {
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+  transform: translateY(-3px);
+}
+@media (min-width: 601px) {
+  .section-head {
+    margin: 36px 0 18px;
+  }
+  .section-head h3 {
+    font-size: 22px;
+  }
+}
+
+/* ── Mode pills ── */
+.mode-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.mode-pill {
+  background: var(--paper);
+  border: 2px solid var(--rule);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  flex: 1;
+  min-width: 140px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+  -webkit-transition:
+    border-color 0.15s,
+    transform 0.15s,
+    box-shadow 0.15s;
+  transition:
+    border-color 0.15s,
+    transform 0.15s,
+    box-shadow 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.mode-pill:hover:not(:disabled) {
+  border-color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(29, 53, 87, 0.1);
+}
+.mode-pill .ord {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 12px;
+  color: var(--gold);
+}
+.mode-pill h5 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 17px;
+  font-weight: 500;
+}
+.mode-pill p {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+.mode-pill--due {
+  border-color: var(--gold);
+}
+.due-badge {
+  color: var(--gold);
+  font-style: normal;
+}
+
+/* ── Skill tree ── */
+.area-block {
+  margin-bottom: 36px;
+}
+.area-title {
+  font-family: var(--serif);
+  font-size: 19px;
+  font-weight: 500;
+  margin: 0 0 4px;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.area-title .roman {
+  color: var(--gold);
+  font-style: italic;
+}
+.area-title .name {
+  flex: 1;
+}
+.area-title .area-prog {
+  font-size: 12px;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-style: normal;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+@media (min-width: 601px) {
+  .area-title {
+    font-size: 20px;
+    gap: 12px;
+  }
+}
+.area-sub {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 0 0 16px;
+  font-style: italic;
+  font-family: var(--serif);
+}
+
+.path {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-wrap: wrap;
+  row-gap: 24px;
+}
+.path-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 88px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+.path-node:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+.medallion {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 2px solid var(--rule);
+  display: grid;
+  place-items: center;
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 500;
+  position: relative;
+  -webkit-transition:
+    transform 0.15s,
+    border-color 0.15s,
+    box-shadow 0.15s;
+  transition:
+    transform 0.15s,
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+.path-node:hover .medallion {
+  transform: scale(1.06);
+  box-shadow: var(--shadow-sm);
+}
+.medallion .code {
+  font-style: italic;
+  color: var(--ink2);
+}
+.medallion.crown-1 {
+  border-color: #cd9c5a;
+  background: #fef3df;
+}
+.medallion.crown-1 .code {
+  color: #7a5118;
+}
+.medallion.crown-2 {
+  border-color: #9b9b9b;
+  background: #f0eee9;
+}
+.medallion.crown-2 .code {
+  color: #3a3a3a;
+}
+.medallion.crown-3 {
+  border-color: var(--gold);
+  background: #faecc7;
+}
+.medallion.crown-3 .code {
+  color: #6f4d0a;
+}
+.medallion.crown-4 {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: var(--primary-ink);
+  border-width: 3px;
+}
+.medallion.crown-4 .code {
+  color: var(--primary-ink);
+}
+.crown-pip {
+  position: absolute;
+  bottom: -6px;
+  right: -6px;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  font-family: var(--serif);
+  font-size: 11px;
+  font-style: italic;
+  font-weight: 600;
+  color: var(--gold);
+}
+.crown-pip.crown-4 {
+  background: var(--gold);
+  color: var(--paper);
+  border-color: var(--gold);
+}
+.path-node .nm {
+  margin-top: 10px;
+  font-size: 11.5px;
+  color: var(--ink2);
+  text-align: center;
+  max-width: 120px;
+  line-height: 1.3;
+}
+.path-node .crown-label {
+  margin-top: 4px;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.path-connector {
+  flex: 0 0 32px;
+  height: 2px;
+  background: var(--rule);
+  margin-top: -30px;
+}
+.path-connector.done {
+  background: var(--gold);
+}
+@media (max-width: 760px) {
+  .path {
+    justify-content: center;
+  }
+  .path-connector {
+    display: none;
+  }
+  .path-node {
+    min-width: 80px;
+    margin-bottom: 8px;
+  }
+}
+
+/* ── Lesson intro card ── */
+.lesson-intro {
+  max-width: 560px;
+  margin: 20px auto;
+  text-align: center;
+}
+.lesson-intro .crest {
+  width: 88px;
+  height: 88px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 2px solid var(--rule);
+  display: grid;
+  place-items: center;
+  font-family: var(--serif);
+  font-size: 30px;
+  font-style: italic;
+  color: var(--ink2);
+  box-shadow: var(--shadow-sm);
+}
+.lesson-intro h2 {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 500;
+  margin: 0 0 6px;
+  letter-spacing: -0.01em;
+}
+@media (min-width: 601px) {
+  .lesson-intro h2 {
+    font-size: 32px;
+  }
+}
+.lesson-intro .topic {
+  color: var(--muted);
+  font-style: italic;
+  font-family: var(--serif);
+  font-size: 15px;
+  margin-bottom: 20px;
+}
+.lesson-intro .lesson-meta {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+.lesson-intro .lesson-meta .item {
+  text-align: center;
+}
+.lesson-intro .lesson-meta .item .v {
+  font-family: var(--serif);
+  font-size: 24px;
+  line-height: 1;
+}
+.lesson-intro .lesson-meta .item .l {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  margin-top: 6px;
+}
+.lesson-intro .crown-progress {
+  margin: 18px auto;
+  max-width: 300px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.lesson-intro .crown-progress .pips {
+  display: flex;
+  gap: 6px;
+}
+.crown-pip-inline {
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid var(--rule);
+  border-radius: 50%;
+  background: var(--paper);
+}
+.crown-pip-inline.filled {
+  background: var(--gold);
+  border-color: var(--gold);
+}
+.lesson-intro .crown-progress .lbl {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-family: var(--sans);
+}
+.lesson-intro .actions {
+  margin-top: 24px;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}

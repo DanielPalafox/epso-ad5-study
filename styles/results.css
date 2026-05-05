@@ -1,0 +1,331 @@
+/* results.css ─ end-of-session screens: lesson result card, mock test result
+   summary with by-area breakdown and review-of-wrongs, plus the modal-overlay
+   used by confirm/alert/out-of-hearts dialogs. */
+
+/* ── Lesson result screen ── */
+.result-card {
+  max-width: 520px;
+  margin: 20px auto;
+  text-align: center;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  padding: 32px 20px;
+  box-shadow: var(--shadow);
+}
+@media (min-width: 601px) {
+  .result-card {
+    padding: 40px 28px;
+  }
+}
+.result-card.success {
+  border-color: var(--correct);
+}
+.result-card.fail {
+  border-color: var(--wrong);
+}
+.result-card .crest {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--serif);
+  font-size: 32px;
+  background: var(--correct-bg);
+  color: var(--correct);
+  border: 2px solid var(--correct);
+}
+.result-card.fail .crest {
+  background: var(--wrong-bg);
+  color: var(--wrong);
+  border-color: var(--wrong);
+}
+.result-card h2 {
+  font-family: var(--serif);
+  font-size: 26px;
+  font-weight: 500;
+  margin: 0 0 6px;
+  letter-spacing: -0.01em;
+}
+@media (min-width: 601px) {
+  .result-card h2 {
+    font-size: 30px;
+  }
+}
+.result-card .verdict {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+.result-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 20px 0;
+  text-align: left;
+}
+.result-stats .item {
+  padding: 12px 14px;
+  border: 1px solid var(--rule2);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+}
+.result-stats .item .l {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+}
+.result-stats .item .v {
+  font-family: var(--serif);
+  font-size: 22px;
+  margin-top: 4px;
+}
+.result-stats .item .v .delta {
+  color: var(--correct);
+  font-style: italic;
+  font-size: 16px;
+  margin-left: 4px;
+}
+.result-stats .item .v .delta.neg {
+  color: var(--wrong);
+}
+.result-card .actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+/* ── Modal dialog (confirm / alert / out-of-hearts) ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 22, 18, 0.5);
+  display: grid;
+  place-items: center;
+  z-index: 50;
+  padding: 20px;
+  -webkit-animation: fadeIn 0.2s;
+  animation: fadeIn 0.2s;
+}
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+}
+.modal {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  padding: 28px 24px;
+  max-width: 440px;
+  width: 100%;
+  box-shadow: 0 20px 60px -20px rgba(26, 22, 18, 0.4);
+  text-align: center;
+}
+@media (min-width: 601px) {
+  .modal {
+    padding: 32px 28px;
+  }
+}
+.modal .heart-big {
+  font-size: 56px;
+  margin-bottom: 8px;
+}
+.modal h3 {
+  font-family: var(--serif);
+  font-size: 22px;
+  margin: 0 0 8px;
+  font-weight: 500;
+}
+.modal p {
+  color: var(--ink2);
+  font-size: 14.5px;
+  line-height: 1.6;
+  margin: 0 0 18px;
+}
+.modal .timer-line {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--muted);
+  margin: 14px 0;
+  padding: 10px;
+  background: var(--bg2);
+  border: 1px dashed var(--rule);
+  border-radius: var(--radius-sm);
+}
+.modal .actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+/* ── Mock test results ── */
+.mock-result {
+  max-width: 780px;
+  margin: 0 auto;
+}
+.score-display {
+  text-align: center;
+  padding: 32px 20px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  margin-bottom: 24px;
+}
+@media (min-width: 601px) {
+  .score-display {
+    padding: 40px 24px;
+  }
+}
+.score-display .verdict {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--accent);
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+.score-display .num {
+  font-family: var(--serif);
+  font-size: 80px;
+  line-height: 1;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+}
+@media (min-width: 601px) {
+  .score-display .num {
+    font-size: 96px;
+  }
+}
+.score-display .num .of {
+  color: var(--muted);
+  font-size: 48px;
+}
+@media (min-width: 601px) {
+  .score-display .num .of {
+    font-size: 56px;
+  }
+}
+.score-display .pct {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--gold);
+  font-size: 20px;
+  margin-top: 8px;
+}
+.score-display .pass {
+  margin-top: 18px;
+  display: inline-block;
+  padding: 6px 14px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  border-radius: 20px;
+}
+.score-display .pass.yes {
+  background: var(--correct-bg);
+  color: var(--correct);
+}
+.score-display .pass.no {
+  background: var(--wrong-bg);
+  color: var(--wrong);
+}
+.area-bar {
+  display: grid;
+  grid-template-columns: 1fr 70px;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--rule2);
+  font-size: 14px;
+}
+@media (min-width: 601px) {
+  .area-bar {
+    grid-template-columns: 240px 1fr 90px;
+    gap: 16px;
+  }
+}
+.area-bar .name {
+  font-family: var(--serif);
+  font-size: 15px;
+  grid-column: 1/-1;
+}
+@media (min-width: 601px) {
+  .area-bar .name {
+    grid-column: auto;
+    font-size: 16px;
+  }
+}
+.area-bar .name .areanum {
+  font-style: italic;
+  color: var(--gold);
+  margin-right: 8px;
+}
+.area-bar .track {
+  height: 8px;
+  background: var(--bg2);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+.area-bar .fill {
+  height: 100%;
+  background: var(--primary);
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 4px;
+}
+.area-bar .fill.weak {
+  background: var(--accent);
+}
+.area-bar .fill.empty {
+  background: var(--rule);
+}
+.area-bar .num {
+  font-family: var(--mono);
+  text-align: right;
+  font-size: 13px;
+}
+.review-item {
+  border-top: 1px solid var(--rule2);
+  padding: 14px 0;
+}
+.review-item .stem {
+  font-family: var(--serif);
+  font-size: 15px;
+  line-height: 1.45;
+  margin: 0 0 8px;
+}
+.review-item .answer-row {
+  font-size: 13.5px;
+  color: var(--ink2);
+}
+.review-item .your {
+  color: var(--wrong);
+  text-decoration: line-through;
+}
+.review-item .right {
+  color: var(--correct);
+  font-weight: 500;
+}
+.review-item .why {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--muted);
+  border-left: 2px solid var(--rule);
+  padding-left: 12px;
+  line-height: 1.5;
+}

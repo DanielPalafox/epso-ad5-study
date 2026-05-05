@@ -1,0 +1,414 @@
+/* question.css ─ study-mode question UI: qbar, card, options, answer panel.
+   The exam-mode (mock test) overrides live in exam.css and load after this file. */
+
+/* ── Question card ── */
+.qview {
+  max-width: 780px;
+  margin: 0 auto;
+}
+.qbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 14px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--rule);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.qbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+.qbar .progress-bar {
+  flex: 1;
+  min-width: 100px;
+  height: 12px;
+  background: var(--bg2);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.qbar .progress-bar .fill {
+  height: 100%;
+  background: var(--correct);
+  border-radius: 6px;
+  -webkit-transition: width 0.35s ease;
+  transition: width 0.35s ease;
+}
+.qbar-right {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.timer {
+  font-family: var(--mono);
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+.timer.warn {
+  color: var(--accent);
+}
+.timer.crit {
+  color: var(--wrong);
+  font-weight: 700;
+}
+.qbar .quit {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 20px;
+  padding: 4px 10px;
+  line-height: 1;
+  -webkit-tap-highlight-color: transparent;
+}
+.qbar .quit:hover {
+  color: var(--ink);
+}
+.qcard {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  padding: 20px 18px;
+  box-shadow: var(--shadow);
+}
+@media (min-width: 601px) {
+  .qcard {
+    padding: 32px 36px;
+  }
+}
+.qmeta {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  margin-bottom: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.qmeta .competence-tag {
+  font-family: var(--mono);
+  letter-spacing: 0.05em;
+  color: var(--gold);
+  text-transform: none;
+  font-size: 12px;
+}
+.qmeta .flag-btn {
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-family: var(--sans);
+  -webkit-tap-highlight-color: transparent;
+}
+.qmeta .flag-btn:hover,
+.qmeta .flag-btn.flagged {
+  color: var(--accent);
+}
+.qstem {
+  font-family: var(--serif);
+  font-size: 20px;
+  line-height: 1.5;
+  margin: 0 0 22px;
+  font-weight: 400;
+}
+@media (min-width: 601px) {
+  .qstem {
+    font-size: 22px;
+    line-height: 1.45;
+    margin-bottom: 26px;
+  }
+}
+
+/* ── Answer options ── */
+.opts {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.opt {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 16px 16px;
+  border: 2px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--paper);
+  cursor: pointer;
+  -webkit-transition:
+    border-color 0.12s,
+    background 0.12s,
+    transform 0.1s;
+  transition:
+    border-color 0.12s,
+    background 0.12s,
+    transform 0.1s;
+  font-size: 15px;
+  line-height: 1.45;
+  font-weight: 500;
+  -webkit-tap-highlight-color: transparent;
+}
+@media (min-width: 601px) {
+  .opt {
+    padding: 14px 16px;
+  }
+}
+.opt:hover:not(.locked) {
+  border-color: var(--primary);
+  background: var(--bg);
+  transform: translateY(-2px);
+}
+.opt:active:not(.locked) {
+  transform: scale(0.99);
+}
+.opt.locked {
+  cursor: default;
+}
+.opt .key {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 700;
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--ink2);
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.opt.selected .key {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+.opt.correct {
+  border-color: var(--correct);
+  background: var(--correct-bg);
+}
+.opt.correct .key {
+  background: var(--correct);
+  color: #fff;
+  border-color: var(--correct);
+}
+.opt.wrong {
+  border-color: var(--wrong);
+  background: var(--wrong-bg);
+  -webkit-animation: shake 0.4s ease;
+  animation: shake 0.4s ease;
+}
+.opt.wrong .key {
+  background: var(--wrong);
+  color: #fff;
+  border-color: var(--wrong);
+}
+.opt .body {
+  flex: 1;
+}
+.opt .marker {
+  margin-left: auto;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 14px;
+  font-weight: 700;
+  align-self: center;
+}
+@-webkit-keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-5px);
+  }
+  40% {
+    transform: translateX(5px);
+  }
+  60% {
+    transform: translateX(-3px);
+  }
+  80% {
+    transform: translateX(3px);
+  }
+}
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-5px);
+  }
+  40% {
+    transform: translateX(5px);
+  }
+  60% {
+    transform: translateX(-3px);
+  }
+  80% {
+    transform: translateX(3px);
+  }
+}
+
+/* ── Answer panel (bottom slide-up on mobile) ── */
+.answer-panel {
+  display: none;
+}
+.answer-panel.visible {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  -webkit-animation: slideUp 0.28s ease;
+  animation: slideUp 0.28s ease;
+}
+/* Mobile: fixed to bottom, slides up */
+@media (max-width: 600px) {
+  .answer-panel.visible {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    padding: 20px 16px;
+    padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    border-radius: 20px 20px 0 0;
+    border-top: 3px solid var(--rule);
+    background: var(--paper);
+    box-shadow: 0 -4px 32px rgba(26, 22, 18, 0.16);
+  }
+  .answer-panel.correct.visible {
+    background: var(--correct-bg);
+    border-color: var(--correct);
+  }
+  .answer-panel.wrong.visible {
+    background: var(--wrong-bg);
+    border-color: var(--wrong);
+  }
+  /* push card content up so it's not hidden under panel */
+  .qview.answered .qcard {
+    padding-bottom: 200px;
+  }
+}
+/* Desktop: inline block below the card */
+@media (min-width: 601px) {
+  .answer-panel.visible {
+    border-left: 3px solid var(--gold);
+    background: var(--bg2);
+    padding: 18px 22px;
+    margin-top: 18px;
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  }
+  .answer-panel.correct.visible {
+    border-left-color: var(--correct);
+    background: var(--correct-bg);
+  }
+  .answer-panel.wrong.visible {
+    border-left-color: var(--wrong);
+    background: var(--wrong-bg);
+  }
+}
+.panel-head {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+.answer-panel.correct .panel-head {
+  color: var(--correct);
+}
+.answer-panel.wrong .panel-head {
+  color: var(--wrong);
+}
+@media (min-width: 601px) {
+  .answer-panel .panel-head {
+    font-size: 16px;
+    color: var(--gold);
+  }
+  .answer-panel.correct .panel-head {
+    color: var(--correct);
+  }
+  .answer-panel.wrong .panel-head {
+    color: var(--wrong);
+  }
+}
+.panel-text {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--ink2);
+}
+@-webkit-keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+/* ── Question footer (keyboard hint) ── */
+.qfoot {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.qfoot .left {
+  color: var(--muted);
+  font-size: 12px;
+}
+@media (max-width: 600px) {
+  .qfoot .left {
+    display: none;
+  }
+} /* hide kb hint on mobile */
+kbd {
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 1px 6px;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background: var(--paper);
+  color: var(--ink2);
+}
+
+/* ── In-session streak counter (gamification) ── */
+.streak-counter {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--flame);
+  background: rgba(201, 122, 53, 0.12);
+  border-radius: 20px;
+  padding: 3px 10px;
+  letter-spacing: 0.02em;
+  -webkit-animation: streakPop 0.25s ease;
+  animation: streakPop 0.25s ease;
+}
+@-webkit-keyframes streakPop {
+  0% { transform: scale(0.8); opacity: 0; }
+  60% { transform: scale(1.15); }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes streakPop {
+  0% { transform: scale(0.8); opacity: 0; }
+  60% { transform: scale(1.15); }
+  100% { transform: scale(1); opacity: 1; }
+}
