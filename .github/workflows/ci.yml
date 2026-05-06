@@ -31,7 +31,7 @@ jobs:
         run: npm run typecheck
 
       - name: Validate question bank
-        run: npm run validate:questions
+        run: npm run validate:questions:strict
 
       - name: Run tests
         run: npm test

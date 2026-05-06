@@ -11,8 +11,9 @@
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "validate:questions": "node scripts/validate-questions.mjs",
+    "validate:questions:strict": "node scripts/validate-questions.mjs --strict",
     "version:sw": "node scripts/version-sw.mjs",
-    "check": "npm run typecheck && npm run test && npm run validate:questions"
+    "check": "npm run typecheck && npm run test && npm run validate:questions:strict"
   },
   "keywords": [
     "epso",

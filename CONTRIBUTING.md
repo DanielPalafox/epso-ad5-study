@@ -95,6 +95,7 @@ Before submitting, verify each question:
 - [ ] No verbatim text is copied from the source PDFs (paraphrase and reformulate)
 - [ ] The question stem is self-contained (readable without external context)
 - [ ] The ID is unique and follows the naming convention
+- [ ] `npm run validate:questions:strict` passes — confirms the four options are similar in length and tone, the correct answer is not a stylistic outlier (longer, only-hedged, only-multi-clause, only-policy-flavoured), and absolutes appear in the correct option as well as distractors when they appear at all
 
 ---
 
@@ -161,8 +162,9 @@ src/
 npm install          # one-time, installs devDependencies
 npm test             # unit tests (Vitest)
 npm run typecheck    # TypeScript checks the JSDoc on all src/*.js
-npm run validate:questions   # schema-checks questions.js + digcomp3.js
-npm run check        # all of the above
+npm run validate:questions          # schema + style checks (warns)
+npm run validate:questions:strict   # same, but fails on any style violation
+npm run check        # typecheck + tests + strict validator (the CI gate)
 ```
 
 CI runs all of these on every pull request. Don't rely on your local environment — read
