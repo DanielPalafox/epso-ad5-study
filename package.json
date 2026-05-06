@@ -1,6 +1,6 @@
 {
   "name": "epso-ad5-study",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Gamified prep for the EPSO AD5 Digital Skills Test — DigComp 2.2/3.0, hearts, XP, mock exam. Browser-only, no build.",
   "private": true,
   "license": "MIT",

@@ -546,6 +546,30 @@ header.masthead {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
+.version-tag {
+  font-family: var(--mono);
+  font-style: normal;
+  font-size: 11px;
+  color: var(--muted);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  padding: 1px 6px;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  -webkit-transition: color 0.15s, border-color 0.15s, background 0.15s;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.version-tag:hover,
+.version-tag:focus-visible {
+  color: var(--gold);
+  border-color: var(--gold);
+  background: var(--paper);
+  outline: none;
+}
+.version-tag:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
 
 /* ── Focus ── */
 button:focus-visible,
