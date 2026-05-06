@@ -9,7 +9,7 @@
 //   - This file uses classic-script syntax (no ES modules) because module-type
 //     service workers are still partially supported on iOS.
 
-const CACHE_VERSION = "1.0.0";
+const CACHE_VERSION = "1.1.0";
 const CACHE_NAME = "epso-ad5-" + CACHE_VERSION;
 
 const APP_SHELL = [

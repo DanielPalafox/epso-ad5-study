@@ -2,7 +2,7 @@
 // Entry point: boots state, attaches the keyboard handler, kicks off render,
 // and runs the per-minute heart-regen tick.
 
-import { VIEWS, MAX_HEARTS } from "./constants.js";
+import { VIEWS, MAX_HEARTS, APP_VERSION } from "./constants.js";
 import { STATE, initState, isStorageAvailable, regenHearts } from "./state.js";
 import { render, initRouter } from "./router.js";
 import { attachKeyboard } from "./keyboard.js";
@@ -17,6 +17,12 @@ watchSystemTheme();
 initRouter();
 regenHearts();
 attachKeyboard();
+
+// Populate any [data-version] elements from the single-source APP_VERSION
+// constant — the footer pill is the current consumer.
+document.querySelectorAll("[data-version]").forEach(el => {
+  el.textContent = "v" + APP_VERSION;
+});
 
 // Warn the user when localStorage is blocked (Safari Private mode, embedded webviews, etc.)
 // Otherwise progress would silently fail to save and the user wouldn't know why.

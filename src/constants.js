@@ -1,4 +1,10 @@
 // Static configuration. No runtime state, no dependencies.
+//
+// `APP_VERSION` is the single source of truth for the user-visible release
+// version. Update it when bumping `package.json` version. The footer pill in
+// index.html is populated from this value at runtime.
+
+export const APP_VERSION = "1.1.0";
 
 export const STORE_KEY = "epso_ad5_v1";
 
